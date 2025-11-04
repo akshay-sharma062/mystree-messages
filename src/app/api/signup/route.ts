@@ -102,7 +102,7 @@ export async function POST(request:Request) {
             {
                 success : false,
                 message : "Error registering user  "
-            }
+            },
             {
                status : 500
             }

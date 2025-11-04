@@ -14,7 +14,7 @@ async function dbConnect():Promise<void> {
         return
     }
     try {
-       const db= await mongoose.connect(process.env.MONGODB_URI || "" )
+       const db= await mongoose.connect(`mongodb://localhost:27017/` )//(process.env.MONGODB_URI || "" )
        connetion.isConnected = db.connections[0].readyState
        console.log( "db connected success")
     } catch (err) {

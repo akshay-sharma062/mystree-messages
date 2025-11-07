@@ -12,13 +12,13 @@ export async function SendVerificationEmail(
 
     try {
 
-        await resend.emails.send({
-            from: 'onboarding@resend.dev',
+        const emailRes = await resend.emails.send({
+            from: 'akshay.ku.sharma.062@gmail.com',
             to: email,
             subject: 'Mystreee Messages  ||  Verification Code',
             react: VerificationEmail({username, otp:verficationCode}),
           });
-
+          console.log(emailRes," email send ")
 
         return { success: true , message : "verification email send  Sucess "}
     } catch (emailError) {

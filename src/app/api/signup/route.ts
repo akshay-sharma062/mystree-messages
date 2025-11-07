@@ -12,6 +12,7 @@ export async function POST(request:Request) {
     await dbConnect()
     try {
         const {username , email , password} = await request.json()
+        console.log("crud",username , email , password)
         const existingUserVerifiedByUsername = await UserModel.findOne({
             username,
             isverified:true
@@ -28,10 +29,11 @@ export async function POST(request:Request) {
 
 
         const existingUserVerifiedByEmail = await UserModel.findOne({email})
-
+        console.log(existingUserVerifiedByEmail,"emai verifyx")
         const verifyCode = Math.floor(100000 + Math.random()* 9000000).toString()
 
         if (existingUserVerifiedByEmail) {
+            console.log("i am in ")
             if (existingUserVerifiedByEmail.isverified) {
                 return Response.json(
                     {
@@ -50,12 +52,13 @@ export async function POST(request:Request) {
                 await existingUserVerifiedByEmail.save()
             }
         }else{
+            console.log("im in")
             const hasedPassword = await bcrypt.hash(password,10)
 
             const expiryDate = new Date()
             expiryDate.setHours(expiryDate.getHours()+1)
 
-
+                    
            const newUser = new UserModel({
                 username ,
                 email , 
@@ -66,6 +69,7 @@ export async function POST(request:Request) {
                 isAceptingMessage :true ,
                 messages : []
             })
+            console.log(newUser,"new usew")
             await newUser.save()
         }
 
@@ -75,6 +79,7 @@ export async function POST(request:Request) {
         username,
         verifyCode
     )
+    console.log(emailResponse,"email rs")
     if (!emailResponse.success) {
         return Response.json(
             {

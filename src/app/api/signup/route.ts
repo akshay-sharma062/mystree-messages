@@ -1,33 +1,41 @@
 import { SendVerificationEmail } from "@/helpers/sendVerificationEmail";
 import dbConnect from "@/lib/dbConnet";
 import UserModel from "@/model/user.model";
+import { signUpSchema } from "@/schemas/signUp.schema";
 import bcrypt from "bcryptjs";
-import { success } from "zod";
-
-
-
 export async function POST(request:Request) {
 
 
     await dbConnect()
     try {
+
         const {username , email , password} = await request.json()
+        const validiateUser = await signUpSchema.safeParseAsync({username , email , password})
+        if (!validiateUser.success) {
+            const errors = validiateUser.error.issues.map((err) => ({
+              path: err.path.join('.'),  
+              message: err.message,      
+            }));
+          
+            return Response.json(
+              { success: false, errors },
+              { status: 422 }
+            );
+          }
         console.log("crud",username , email , password)
-        const existingUserVerifiedByUsername = await UserModel.findOne({
-            username,
-            isverified:true
-        })
-        if (existingUserVerifiedByUsername) {
-           return Response.json({
-            success : false,
-            message : "User already Resisterd ",
+        // const existingUserVerifiedByUsername = await UserModel.findOne({
+        //     username,
+        //     isverified:true
+        // })
+        // if (existingUserVerifiedByUsername) {
+        //    return Response.json({
+        //     success : false,
+        //     message : "User already Resisterd ",
              
-           },{
-            status : 400
-           })
-        }
-
-
+        //    },{
+        //     status : 400
+        //    })
+        // }
         const existingUserVerifiedByEmail = await UserModel.findOne({email})
         console.log(existingUserVerifiedByEmail,"emai verifyx")
         const verifyCode = Math.floor(100000 + Math.random()* 9000000).toString()

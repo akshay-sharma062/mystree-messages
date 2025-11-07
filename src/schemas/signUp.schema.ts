@@ -1,3 +1,4 @@
+import UserModel from "@/model/user.model";
 import { z } from "zod";
 
 export const userNameValidation = z
@@ -8,6 +9,11 @@ export const userNameValidation = z
 
 export const signUpSchema = z.object({
   username: userNameValidation,
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z.string().email({ message: "Invalid email address" }).refine(async(email)=>{
+     const userEmail = await UserModel.findOne({email})
+     return !userEmail
+  },{
+    message: "email already exist"
+  }),
   password : z.string().min(6,{message:"password must contain 6 char"})
 });

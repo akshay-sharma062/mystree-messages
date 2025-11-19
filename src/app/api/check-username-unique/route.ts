@@ -14,22 +14,24 @@ export async function GET(request : Request) {
     try {
         const {searchParams} = new URL(request.url)
         const queryPram = {
-            username : searchParams.get("username ")
+            username : searchParams.get("username")
         }
         const result = UsernameQuerySchema.safeParse(queryPram)
+        console.log(result,"username Query Schema ")
         if (!result.success) {
             const usernameErrors = result.error.format().username?._errors || []
             return Response.json({
                 success:false,
-                message : "invalid query "
+                message : "invalid query permeter "
             },
             {status:500}
             )
         }
         console.log("resukts of check usre-name-unique.js",result)
         const {username}=result.data
-        const existingVerifiedUser = await UserModel.findOne({username,isVerified:true})
+        const existingVerifiedUser = await UserModel.findOne({username,isverified:true})
         if (existingVerifiedUser) {
+            
             return Response.json({
                 success:false,
                 message : "User alredy taken"

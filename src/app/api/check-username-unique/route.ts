@@ -20,25 +20,25 @@ export async function GET(request : Request) {
         if (!result.success) {
             const usernameErrors = result.error.format().username?._errors || []
             return Response.json({
-                success:false;
-                message : "invalid query parameter"
+                success:false,
+                message : "invalid query "
             },
             {status:500}
             )
         }
+        console.log("resukts of check usre-name-unique.js",result)
         const {username}=result.data
-
         const existingVerifiedUser = await UserModel.findOne({username,isVerified:true})
         if (existingVerifiedUser) {
             return Response.json({
-                success:false;
+                success:false,
                 message : "User alredy taken"
             },
             {status:500}
             )
         }
         return Response.json({
-            success:true;
+            success:true,
             message : "User name is unique"
         },
         {status:200}
@@ -47,7 +47,7 @@ export async function GET(request : Request) {
     } catch (error) {
         console.log("error checking user name ",error)
         return Response.json({
-            success:false;
+            success:false,
             message : "errror checking usrename"
         },
         {status:500}

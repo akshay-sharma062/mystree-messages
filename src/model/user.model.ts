@@ -25,7 +25,7 @@ export interface User extends Document {
     password : string ,
     verifyCode : string ,
     verifyCodeExpiry: Date ,
-    isverified : boolean,
+    isVerified : boolean,
     isAceptingMessage : boolean ,
     messages : Message[]
 }

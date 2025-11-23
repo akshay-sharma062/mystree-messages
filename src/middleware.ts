@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/home', request.url));
     }
   
-    // Otherwise, continue normally
+
     return NextResponse.next();
 }
  

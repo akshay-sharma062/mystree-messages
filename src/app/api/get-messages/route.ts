@@ -50,13 +50,14 @@ export async function GET(request:Request) {
             }
         )
     } catch (error) {
+        console.log("unexpected error occured:",error)
         return Response.json(
             {
                 success : false,
-                message : "user not found"
+                message : "unexpected error occured"
             },
             {
-               status : 401
+               status : 500
             }
         )
     }

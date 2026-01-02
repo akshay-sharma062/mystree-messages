@@ -23,6 +23,7 @@ import axios, { AxiosError } from 'axios';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { signInSchema } from '@/schemas/signIn.schema';
+import { signIn } from 'next-auth/react';
 
 export default function SignInForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,26 +38,18 @@ export default function SignInForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    setIsSubmitting(true);
-
-    try {
-      await axios.post<ApiResponse>('/api/sign-in', data);
-
-      toast.success('Sign In Successful', {
-        description: 'Welcome back!',
+    const result = await signIn('credentials',{
+      redirect:false,
+      identifier : data.identifier,
+      password : data.password
+    })
+    if (result?.error) {
+      toast.error('login Failed', {
+        description: result.error,
       });
 
-      router.replace('/dashboard');
-    } catch (error) {
-      const axiosError = error as AxiosError<ApiResponse>;
-
-      toast.error('Sign In Failed', {
-        description:
-          axiosError.response?.data.message ??
-          'Invalid credentials. Please try again.',
-      });
-    } finally {
-      setIsSubmitting(false);
+    if (result?.url) {
+      router.replace('/dasboard')
     }
   };
 
@@ -77,7 +70,7 @@ export default function SignInForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email / Username</FormLabel>
+                  <FormLabel>Email / Username </FormLabel>
                   <Input {...field} />
                   <FormMessage />
                 </FormItem>
@@ -120,4 +113,4 @@ export default function SignInForm() {
       </div>
     </div>
   );
-}
+

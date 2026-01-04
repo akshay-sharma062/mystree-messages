@@ -1,14 +1,10 @@
 'use client';
-
-
-
 import { ApiResponse } from '@/types/ApiResponse';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -24,11 +20,9 @@ import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { signInSchema } from '@/schemas/signIn.schema';
 import { signIn } from 'next-auth/react';
-
 export default function SignInForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -36,7 +30,6 @@ export default function SignInForm() {
       password: '',
     },
   });
-
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
     const result = await signIn('credentials',{
       redirect:false,
@@ -46,13 +39,14 @@ export default function SignInForm() {
     if (result?.error) {
       toast.error('login Failed', {
         description: result.error,
+        className: "border border-red-500 bg-red-50 text-red-800",
       });
 
     if (result?.url) {
       router.replace('/dasboard')
     }
   };
-
+}
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-800">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
@@ -113,4 +107,5 @@ export default function SignInForm() {
       </div>
     </div>
   );
+ }
 

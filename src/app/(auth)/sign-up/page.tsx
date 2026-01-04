@@ -72,6 +72,7 @@ export default function SignUpForm() {
 
       toast.success('signUp Successful', {
         description: 'Welcome !',
+        className: "border border-green-500 bg-green-50 text-green-800",
       });
 
       router.replace(`/verify/${username}`);
@@ -87,7 +88,7 @@ export default function SignUpForm() {
       ('There was a problem with your sign-up. Please try again.');
 
       toast.error('signUp Failed', {
-        description: 'Incorrect username or password',
+        description: ' className: "border border-red-500 bg-red-50 text-red-800",',
       });
 
       setIsSubmitting(false);

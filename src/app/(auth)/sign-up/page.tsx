@@ -28,7 +28,7 @@ export default function SignUpForm() {
   const [usernameMessage, setUsernameMessage] = useState('');
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const debouncedUsername = useDebounceValue (username, 300);
+  const [debouncedUsername] = useDebounceValue (username, 300);
 
   const router = useRouter();
 //   const { toast } = useToast();
@@ -45,6 +45,7 @@ export default function SignUpForm() {
   useEffect(() => {
     const checkUsernameUnique = async () => {
       if (debouncedUsername) {
+
         setIsCheckingUsername(true);
         setUsernameMessage(''); // Reset message
         try {

@@ -37,16 +37,23 @@ export default function SignInForm() {
       password : data.password
     })
     if (result?.error) {
+      if (result.error === 'CredentialsSignin') {
       toast.error('login Failed', {
         description: result.error,
         className: "border border-red-500 bg-red-50 text-red-800",
       });
-
+    }else{
+      toast.error('login failed',{
+        description: 'Incorrect username or password',
+        className: "border border-red-500 bg-red-50 text-red-800",
+      })
+    }
+  }
     if (result?.url) {
-      router.replace('/dasboard')
+      router.replace('/dashboard')
     }
   };
-}
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-800">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">

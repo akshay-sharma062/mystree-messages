@@ -161,6 +161,7 @@ const fetchAcceptMessage = useCallback(async () => {
           <MessageCard
              key={String(message._id)}
              message={message}
+             username={username}
              onMessageDelete={handleDeleteMessage}
             />
         ))
